@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="css/loginStyle.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <!-- <script src="js/login.js"></script> -->
+
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="formdiv">
+    <div class="form">
+      <!-- <form id="loginForm" action="/login" method="post"> -->
+        <h1>Welcome Back!!</h1>
+        <input for="email" id="emailField" type="email" placeholder="Email" class="email" name="email">
+        <span class="error" id="emailError"></span>
+        <input type="password" id="passwdField" name="password" id="password" placeholder=" Password" class="pass">
+        <span class="error" id="passwordError"></span>
+        <div class="forget"><a href="">Forget Password?</a></div>
+        <button type="submit" id="loginBtn" class="log-btn"> Log in</button>
+        <div class="account">
+          Don't have an account? <a href="/signup" class="direct">Sign up</a>
+        </div>
+        <div class="or">
+          or<br>
+          <button type="button" class="Abutton">Log in with Apple</button>
+          <button type="button" class="Gbutton">Log in with Google</button>
+        </div>
+      <!-- </form> -->
+    </div>
+  </div>
+
+
+  <script>
+    let loginBtn = document.getElementById('loginBtn')
+    let email = document.getElementById('emailField')
+    let passwd = document.getElementById('passwdField')
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+
+    async function handleRegisterClick() {
+      const emailValue = email.value.trim()
+      const passwdValue = passwd.value.trim()
+
+
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          emailValue,
+          passwdValue
+        })
+      })
+
+      if (response.status === 200) {
+        window.location.href = '/'
+      } else {
+        const data = await response.json()
+        alert(data.error)
+      }
+
+    }
+
+    function checkInputs() {
+      const emailValue = email.value.trim()
+      const passwdValue = passwd.value.trim()
+
+      isValidEmail = emailRegex.test(emailValue);
+
+
+
+      if (passwdValue !== '' && emailValue !== '' && isValidEmail) {
+        loginBtn.style.background = 'green'
+        loginBtn.addEventListener('click', handleRegisterClick)
+      } else {
+        loginBtn.style.background = 'gray'
+        loginBtn.removeEventListener('click', handleRegisterClick)
+      }
+    }
+
+    email.addEventListener('input', checkInputs)
+    passwd.addEventListener('input', checkInputs)
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SignIn</title>
+  <link rel="stylesheet" href="css/signIn.css">
+  <script src="singn.js"></script>
+
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="formdiv">
+    <div class="form">
+      <h1>Create account</h1>
+      <input for="username" id="nameField" type="text" placeholder="Name" class="name" name="username">
+      <span class="error" id="nameError"></span>
+      <input for="email" id="emailField" type="email" placeholder="Email" class="email" name="email">
+
+      <span class="error" id="emailError"></span>
+
+      <input for="'password" id="passwd1Field" type="password" placeholder="Password" class="pass" name="password">
+
+      <input for="'password" id="passwd2Field" type="password" placeholder="Confirm Password" class="pass" name="password">
+
+      <span class="error" id="passwordError"></span>
+      <button type="submit" id="registerBtn" class="sign-btn" value="Register">Create account</button>
+      <div class="or">
+        Already have an account?<a href="/login" class="direct"> Log in</a><br>
+        <button type="button" class="Abutton">Sign up with Apple</button>
+        <button type="button" class="Gbutton">Sign up with Google</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let registerBtn = document.getElementById('registerBtn')
+    let name = document.getElementById('nameField')
+    let email = document.getElementById('emailField')
+    let passwd1 = document.getElementById('passwd1Field')
+    let passwd2 = document.getElementById('passwd2Field')
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+
+    async function handleRegisterClick() {
+      const nameValue = name.value.trim()
+      const emailValue = email.value.trim()
+      const passwdValue = passwd1.value.trim()
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: nameValue,
+            email: emailValue,
+            password: passwdValue
+          })
+        })
+
+        const data = await response.json()
+
+        if (response.status === 201) {
+          window.location.href = '/login'
+        } else {
+          if (response.status === 409) {
+            alert('Email address already in use. Please use a different email.')
+          } else {
+            console.log(response)
+          }
+          console.error('Error:', data.message)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+
+    function checkInputs() {
+      const nameValue = name.value.trim()
+      const emailValue = email.value.trim()
+      const passwd1Value = passwd1.value.trim()
+      const passwd2Value = passwd2.value.trim()
+
+      isValidEmail = emailRegex.test(emailValue);
+
+
+
+
+      if (passwd1Value === passwd2Value && emailValue !== '' && nameValue !== '' && passwd1Value !== '' && passwd2Value !== '' && isValidEmail) {
+        registerBtn.style.background = 'green'
+        registerBtn.addEventListener('click', handleRegisterClick)
+      } else {
+        registerBtn.style.background = 'gray'
+        registerBtn.removeEventListener('click', handleRegisterClick)
+      }
+    }
+
+    name.addEventListener('input', checkInputs)
+    email.addEventListener('input', checkInputs)
+    passwd1.addEventListener('input', checkInputs)
+    passwd2.addEventListener('input', checkInputs)
+  </script>
+
+
+
+
+</body>
+
+</html>

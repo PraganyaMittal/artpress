@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Form</title>
+  <script src="/js/book.js"></script>
+  <style>
+    /* Your CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #023659, #79a5ce);
+      /* Gradient background */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      /* Semi-transparent white background */
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.2);
+      /* Enhanced box shadow */
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: slideIn 1s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 24px;
+      /* Adjusted font size */
+      font-weight: bold;
+      /* Bold font weight */
+      text-transform: uppercase;
+      /* Uppercase text */
+      position: relative;
+      /* Added position relative */
+      display: inline-block;
+      /* Added display inline-block */
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      /* Position under the heading */
+      left: 0;
+      width: 100%;
+      /* Full width */
+      height: 2px;
+      /* Line thickness */
+      background-color: #333;
+      /* Line color */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="date"]:focus {
+      border-color: #2980b9;
+    }
+
+    input[type="submit"] {
+      background-color: #2980b9;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #2c3e50;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Book Now</h1>
+    <div id="uniId" hidden><%=uniqueId%></div>
+    <form id="paymentForm" onsubmit="return validateForm()">
+      <input type="text" name="fullname" placeholder="Full Name" required><br>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="text" name="phone" placeholder="Phone Number" required><br>
+      <input type="password" id="password" name="password" placeholder="Password" required><br>
+      <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required><br>
+
+      <input id="bookBtn" type="submit" value="Pay now">
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('bookBtn').addEventListener('click', async function() {
+      try {
+        // Make an asynchronous POST request to /payment/ with order details
+        const uniId = document.getElementById('uniId').innerText;
+        const response = await fetch(`/book/${uniId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+
+        if (response.status === 200) {
+          alert("Order Placed Successful");
+          window.location.href = '/';
+        } else {
+          alert('Payment failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>

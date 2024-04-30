@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Art Press</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/more2.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container text-center pkgcontainer ">
+    <h1>Artistic Showcases</h1>
+    <span class="txt">Checkout our Arts</span>
+    <div class="row pkgrow">
+      <div id="first" class="col-lg-4 pkg">
+      </div>
+
+      <div id="second" class="col-lg-4 pkg">
+        <div class="detail">
+          <h4>COLLAGE</h4><br>
+          <p>Collage art creatively combines various materials, textures, and images. It transforms the ordinary into abstract compositions, offering unique perspectives by layering, tearing, and reassembling pieces for impactful expression.
+          </p>
+        </div>
+        <div id="info" class="row row-cols-auto-center ">
+
+          <div class="col"><i class='bx bxs-group'></i> 80</div>
+
+        </div>
+
+      </div>
+      <div id="third" class="col-lg-4 pkg">
+        <p>(76 reviews) <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star-half'></i><br>
+          <span class="rate">Rs. 1599</span><br>
+
+        </P>
+        <button class="btn bookbtn btn-outline-light" data-item-id="7" data-item-name="Sketch 7" data-item-price="1599">Buy Now</button>
+
+      </div>
+    </div>
+    <div class="row pkgrow">
+      <div id="first2" class="col-lg-4 pkg">
+      </div>
+
+      <div id="second" class="col-lg-4 pkg">
+        <div class="detail">
+          <h4>DIGITAL ART</h4><br>
+          <p>Digital painting combines technology and creativity, allowing artists to create stunning visuals on digital platforms. It offers flexibility, endless tools, and the ability to experiment without physical constraints.
+          </p>
+        </div>
+        <div id="info" class="row row-cols-auto-center">
+
+          <div class="col"><i class='bx bxs-group'></i>98</div>
+
+        </div>
+
+      </div>
+      <div id="third" class="col-lg-4 pkg">
+        <p>(78 reviews) <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star-half'></i><i class='bx bx-star'></i><br>
+          <span class="rate">RS. 1999</span><br>
+
+        </P>
+        <button class="btn bookbtn btn-outline-light" data-item-id="8" data-item-name="Sketch 8" data-item-price="1999">Buy Now</button>
+
+      </div>
+    </div>
+    <div class="row pkgrow">
+      <div id="first3" class="col-lg-4 pkg">
+      </div>
+
+      <div id="second" class="col-lg-4 pkg">
+        <div class="detail">
+          <h4>LANDSCAPE</h4><br>
+          <p>Landscapes embody the beauty of nature, with rolling hills, lush forests, tranquil lakes, majestic mountains, and endless skies. They inspire tranquility and a profound connection to the Earth.</p>
+        </div>
+        <div id="info" class="row row-cols-auto-center">
+
+          <div class="col"><i class='bx bxs-group'></i>67</div>
+
+        </div>
+
+      </div>
+      <div id="third" class="col-lg-4 pkg">
+        <p>(49 reviews) <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star-half'></i><br>
+          <span class="rate">RS. 1799</span><br>
+
+        </P>
+        <button class="btn bookbtn btn-outline-light" data-item-id="9" data-item-name="Sketch 9" data-item-price="1799">Buy Now</button>
+      </div>
+    </div>
+
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+
+        <li class="page-item"><a href="/shop/1"><button>1</button></a></li>
+        <li class="page-item"><a href="/shop/2"><button>2</button></a></li>
+        <li class="page-item"><a href="/shop/3"><button>3</button></a></li>
+
+      </ul>
+    </nav>
+  </div>
+  <script>
+    document.querySelectorAll('.bookbtn').forEach(button => {
+      button.addEventListener('click', async () => {
+        var userEmail = document.getElementById('user-email').innerText;
+        const itemId = button.getAttribute('data-item-id');
+        const itemName = button.getAttribute('data-item-name');
+        const itemPrice = button.getAttribute('data-item-price');
+        const quantity = 1;
+
+        const response = await fetch('/add-to-cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userEmail,
+            itemId,
+            itemName,
+            itemPrice,
+            quantity
+          })
+        });
+
+        if (response.ok) {
+        //   alert('Item added to cart successfully');
+          button.innerHTML = "Added"
+          // Optionally, you can redirect the user to the cart page after adding the item
+          window.location.href = '/cart';
+        } else {
+          alert('Error adding item to cart');
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
